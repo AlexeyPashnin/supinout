@@ -1,0 +1,11 @@
+name: supinout
+version: 0
+author: monnae
+main: ru.monnae.supinout.plugin.start.Supinout
+commands:
+  signup:
+    description: Description
+    usage: /signup <password>
+  signin:
+    description: Description
+    usage: /signin <password>
