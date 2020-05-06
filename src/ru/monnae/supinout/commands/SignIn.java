@@ -4,14 +4,16 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import ru.monnae.supinout.users.UsersManager;
 import ru.monnae.supinout.plugin.console.ConsoleMessage;
 import ru.monnae.supinout.plugin.start.Supinout;
+import ru.monnae.supinout.users.UsersManager;
+
+import java.util.UUID;
 
 public class SignIn implements CommandExecutor {
     private UsersManager usersManager;
 
-    public SignIn(){
+    public SignIn() {
         usersManager = Supinout.getInstance().getUsersManager();
     }
 
@@ -20,17 +22,17 @@ public class SignIn implements CommandExecutor {
         if (strings.length != 1) {
             String error = Supinout.getInstance().getCommand("signin").getUsage();
             commandSender.sendMessage(ConsoleMessage.getError(error));
-        }
-        else if (commandSender instanceof Player) {
+        } else if (commandSender instanceof Player) {
             Player player = (Player) commandSender;
+            UUID uuid = player.getUniqueId();
 
-            Integer passwordHash = usersManager.getPlayerPasswordHash(player.getUniqueId());
-            if (passwordHash == null) {
-                String error = "Перед входом Вам необходимо зарегистрироваться!";
+            if (!usersManager.isPlayerLogedUp(uuid)) {
+                String error = "Перед входом Вам необходимо зарегистрироваться.";
                 commandSender.sendMessage(ConsoleMessage.getError(error));
-            }
-
-            if (strings[0].hashCode() != passwordHash) {
+            } else if (usersManager.isPlayerLogedIn(uuid)) {
+                String error = "Вы уже авторизованы.";
+                commandSender.sendMessage(ConsoleMessage.getError(error));
+            } else if (strings[0].hashCode() != usersManager.getPlayerPasswordHash(uuid)) {
                 String warning = "Вы ввели некорректный пароль. Попробуйте снова.";
                 commandSender.sendMessage(ConsoleMessage.getWarning(warning));
             } else {

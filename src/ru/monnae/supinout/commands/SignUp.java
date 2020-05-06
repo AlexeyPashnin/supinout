@@ -24,13 +24,18 @@ public class SignUp implements CommandExecutor {
             commandSender.sendMessage(ConsoleMessage.getError(error));
         } else if (commandSender instanceof Player) {
             Player player = (Player) commandSender;
-            usersManager.logUpPlayer(player.getUniqueId(), strings[0].hashCode());
+            if (usersManager.isPlayerLogedUp(player.getUniqueId())) {
+                String warning = "Вы уже зарегистрированы.";
+                commandSender.sendMessage(ConsoleMessage.getWarning(warning));
+            } else if (strings[0].length() < 6 || strings[0].length() > 20) {
+                String warning = "Длина пароля не может быть менее 6 или более 20 символов.";
+                commandSender.sendMessage(ConsoleMessage.getWarning(warning));
+            } else {
+                usersManager.logUpPlayer(player.getUniqueId(), strings[0].hashCode());
 
-            String info = String.format("%s, Вы успешно зарегистрированы.", player.getName());
-            commandSender.sendMessage(ConsoleMessage.getInfo(info));
-        } else if (strings[0].length() < 6 || strings[0].length() > 20) {
-            String warning = "Длина пароля не может быть менее 6 или более 20 символов.";
-            commandSender.sendMessage(ConsoleMessage.getWarning(warning));
+                String info = String.format("%s, Вы успешно зарегистрированы.", player.getName());
+                commandSender.sendMessage(ConsoleMessage.getInfo(info));
+            }
         } else {
             String error = "Отправителем команды может быть только игрок.";
             commandSender.sendMessage(ConsoleMessage.getError(error));

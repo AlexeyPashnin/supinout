@@ -49,8 +49,4 @@ public class Supinout extends JavaPlugin {
         listenerManager.loadListeners();
         commandManager.loadCommands();
     }
-
-    @Override
-    public void onDisable() {
-    }
 }

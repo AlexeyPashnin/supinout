@@ -4,6 +4,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 
 public class FileManager {
     private final String SERVER_DIRECTORY;
@@ -27,7 +28,7 @@ public class FileManager {
                 + PLAYERS_FOLDER;
     }
 
-    public ArrayList<String> getFilesNames(String filesDirectoryPath) {
+    public List<String> getFilesNames(String filesDirectoryPath) {
         ArrayList<String> filesNames = new ArrayList<String>();
         File[] files = new File(filesDirectoryPath).listFiles();
         for (File file : files) {
